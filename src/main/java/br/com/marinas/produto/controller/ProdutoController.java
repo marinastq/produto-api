@@ -2,43 +2,51 @@ package br.com.marinas.produto.controller;
 
 import br.com.marinas.produto.model.Produto;
 import br.com.marinas.produto.repository.ProdutoRepository;
+import br.com.marinas.produto.service.ProdutoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/v1")
 public class ProdutoController {
 
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
-    public ProdutoController(ProdutoRepository produtoRepository){
-        this.produtoRepository = produtoRepository;
+    public ProdutoController(ProdutoService produtoService){
+        this.produtoService = produtoService;
     }
 
     @PostMapping("/produtos")
+    @ResponseStatus(HttpStatus.CREATED)
     public Produto salvarProduto(@RequestBody Produto produto){
-        return produtoRepository.salvar(produto);
+        return produtoService.salvarProduto(produto);
     }
 
     @GetMapping("/produtos/{id}")
-    public Produto buscarProdutoPeloId(@PathVariable("id") String produtoId){
-        return produtoRepository.buscarProdutoPeloId(produtoId);
+    public ResponseEntity<Produto> buscarProdutoPeloId(@PathVariable("id") String produtoId){
+        return produtoService.buscarProdutoPeloId(produtoId);
     }
 
     @GetMapping("/produtos")
+    @ResponseStatus(HttpStatus.OK)
     public List<Produto> buscarTodosProduto(){
-        return produtoRepository.buscarTodosProdutos();
+        return produtoService.buscarTodosProduto();
     }
 
     @PutMapping("/produtos/{id}")
-    public Produto atualizarProdutoPeloId(@PathVariable("id") String produtoId,
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Produto> atualizarProdutoPeloId(@PathVariable("id") String produtoId,
                                       @RequestBody Produto produto){
-        return produtoRepository.atualizarProduto(produtoId, produto);
+        return produtoService.atualizarProdutoPeloId(produtoId, produto);
     }
 
     @DeleteMapping("/produtos/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String excluirProdutoPeloId(@PathVariable("id") String produtoId){
-        return produtoRepository.excluirProdutoPeloId(produtoId);
+        return produtoService.excluirProdutoPeloId(produtoId);
     }
 
 

@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProdutoRepository {
@@ -25,8 +26,9 @@ public class ProdutoRepository {
         return produto;
     }
 
-    public Produto buscarProdutoPeloId(String produtoId){
-        return dynamoDBMapper.load(Produto.class, produtoId);
+    public Optional<Produto> buscarProdutoPeloId(String produtoId) {
+        return Optional.ofNullable(
+                dynamoDBMapper.load(Produto.class, produtoId));
     }
 
     public List<Produto> buscarTodosProdutos(){
@@ -39,16 +41,16 @@ public class ProdutoRepository {
         return "Produto excluído com sucesso";
     }
 
-    public Produto atualizarProduto(String produtoId, Produto produto){
+    public Produto atualizarProduto(Produto produto){
         dynamoDBMapper.save(
                 new Produto(
-                        produtoId,
+                        produto.getProdutoId(),
                         produto.getNome(),
                         produto.getPreco()),
                 new DynamoDBSaveExpression()
                         .withExpectedEntry("produtoId",
                                 new ExpectedAttributeValue(
-                                        new AttributeValue().withS(produtoId)))
+                                        new AttributeValue().withS(produto.getProdutoId())))
         );
         return produto;
     }
