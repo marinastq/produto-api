@@ -15,7 +15,7 @@ public class Produto {
     private String nome;
 
     @DynamoDBAttribute
-    private String preco;
+    private double preco;
 
     public String getProdutoId() {
         return produtoId;
@@ -25,7 +25,7 @@ public class Produto {
         return nome;
     }
 
-    public String getPreco() {
+    public double getPreco() {
         return preco;
     }
 
@@ -37,11 +37,11 @@ public class Produto {
         this.nome = nome;
     }
 
-    public void setPreco(String preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 
-    public Produto(String produtoId, String nome, String preco) {
+    public Produto(String produtoId, String nome, double preco) {
         this.produtoId = produtoId;
         this.nome = nome;
         this.preco = preco;

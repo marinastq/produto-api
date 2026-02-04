@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -21,10 +22,8 @@ public class ProdutoService {
         return produtoRepository.salvar(produto);
     }
 
-    public ResponseEntity<Produto> buscarProdutoPeloId(String produtoId){
-        return produtoRepository.buscarProdutoPeloId(produtoId)
-                .map(produto -> ResponseEntity.ok().body(produto))
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<Produto> buscarProdutoPeloId(String produtoId){
+        return produtoRepository.buscarProdutoPeloId(produtoId);
     }
 
     public List<Produto> buscarTodosProduto(){
